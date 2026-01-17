@@ -1,0 +1,17 @@
+h1.main-title {
+  margin-top: 50vh;
+}
+
+form.main {
+  background-color: oklch(from var(--primary-color) 99.5% 0.005 h);
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  padding: 2rem;
+  border: 1px solid black;
+  border-radius: 20px;
+}

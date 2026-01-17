@@ -1,0 +1,38 @@
+div.input-list {
+  position: relative;
+}
+
+div.input-list>input {
+  overflow: visible;
+}
+
+div.input-list>input::after {
+  content: "abba";
+  display: inline-block;
+  border: 10px solid cyan;
+}
+
+div.input-list>ul.list.hidden {
+  display: none;
+}
+
+div.input-list>ul.list.shown {
+  display: block;
+  background-color: green;
+  border: 2px solid black;
+  position: absolute;
+  right: 0;
+  top: -1;
+  width: 50%;
+  height: max-content;
+}
+
+ul.list>li {
+  margin: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+ul.list>li:hover {
+  background-color: yellow;
+}
