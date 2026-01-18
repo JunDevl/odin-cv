@@ -1,6 +1,10 @@
 :root {
   --primary-color: oklch(75% 0.4 265);
 
+
+
+  --input-height: 2.2rem;
+  --input-border-radius: 0.9rem;
   background-color: oklch(from var(--primary-color) 99% 0.02 h);
   font-size: 18px;
 
@@ -45,10 +49,15 @@ button {
 
 input {
   background-color: white;
-  border-radius: 1rem;
+  border-radius: var(--input-border-radius);
   border: 1px solid black;
-  min-height: 2rem;
+  min-height: var(--input-height);
   padding-left: 1rem;
+  box-sizing: border-box;
+}
+
+input:hover {
+  outline: none;
 }
 
 button[type="submit"] {
