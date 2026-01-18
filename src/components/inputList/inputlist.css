@@ -54,6 +54,6 @@ ul.frameworks-list>li {
   border-radius: var(--input-border-radius);
 }
 
-ul.frameworks-list>li:hover:not(.insert-entry) {
+ul.frameworks-list>li:hover {
   background-color: yellow;
 }
