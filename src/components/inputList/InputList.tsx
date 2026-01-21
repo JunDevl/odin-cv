@@ -1,5 +1,5 @@
 import "./inputlist.css"
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 interface Props extends React.HTMLProps<HTMLInputElement> {
   itemsState: { knownFrameworks: string[], setKnownFrameworks: React.Dispatch<React.SetStateAction<string[]>> }
@@ -11,26 +11,10 @@ const InputList = ({itemsState, ...props}: Props) => {
 
   const {knownFrameworks, setKnownFrameworks} = itemsState;
 
-  /*
-  const observer = new IntersectionObserver(([e]) => {
-    if (!e.isIntersecting) frameworksListElement.current!.style.height = "20px";
-  }, { rootMargin: "0px 0px 0px 0px", threshold: [1] });
-  */
+  const frameworksListIsFull = (): boolean => {
+    const MAXIMUM_CHILD_NODES = 5;
 
-  const frameworksListOverflowsScreen = (): boolean => {
-    //console.log(window.getComputedStyle(frameworksListElement.current!).getPropertyValue("calc(--input-height)"))
-    //const styleMap = frameworksListElement.current!.computedStyleMap()
-    const inputHeightString = window.getComputedStyle(frameworksListElement.current!).getPropertyValue("--input-height");
-    const rootStyle = getComputedStyle(document.documentElement);
-
-    const incrementHeight = parseFloat(inputHeightString.slice(0, -3)) * parseFloat(rootStyle.fontSize);
-
-    const nextHeight = frameworksListElement.current?.offsetHeight! + incrementHeight;
-
-    const listBoundingRect = frameworksListElement.current!.getBoundingClientRect();
-    const viewportHeight = document.documentElement.offsetHeight;
-
-    return listBoundingRect.bottom > viewportHeight;
+    return knownFrameworks.length >= MAXIMUM_CHILD_NODES;
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -44,39 +28,29 @@ const InputList = ({itemsState, ...props}: Props) => {
 
       setKnownFrameworks([...knownFrameworks, target.value])
 
-      if (frameworksListOverflowsScreen()) {
+      if (frameworksListIsFull()) {
         frameworksListElement.current!.style.maxHeight = !frameworksListElement.current!.classList.contains("overflows") ? frameworksListElement.current!.style.height : frameworksListElement.current!.style.maxHeight;
-
-        frameworksListElement.current!.style.overflowY = "scroll";
         
         frameworksListElement.current!.classList.add("overflows");
         return;
       }
-
-        frameworksListElement.current!.style.overflowY = "visible";
 
       frameworksListElement.current!.style.maxHeight = 'none';
       frameworksListElement.current!.classList.remove("overflows");
     }
   }
 
-  const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
+  const handleFocus = () => {
     frameworksListElement.current!.style.height = `calc(var(--input-height)*${knownFrameworks.length + 2})`;
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+  const handleBlur = () => {
     frameworksListElement.current!.style.height = "100%";
   }
 
-  /*
-  useEffect(() => {
-    observer.observe(frameworksListElement.current!);
-  }, [])
-  */
-
   return (
     <div 
-      className="input-list"
+      className="input-list label-input"
       // tabIndex={-1} wip
     >
       <label htmlFor={props.name}>Known languages/frameworks:</label>
@@ -84,17 +58,23 @@ const InputList = ({itemsState, ...props}: Props) => {
         <input 
           {...props} 
           onKeyDown={(e) => handleKeyDown(e)}
-          onFocus={(e) => handleFocus(e)}
-          onBlur={(e) => handleBlur(e)}
+          onFocus={() => handleFocus()}
+          onBlur={() => handleBlur()}
         />
-        <ul className={`frameworks-list`} ref={frameworksListElement}>
-          <li key={INSERT_ENTRY_TEXT} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
-          {knownFrameworks.map(item => (
-            <li className="framework-item" key={item}>
+        <ul 
+          className="frameworks-list" 
+          ref={frameworksListElement}
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <div className="wrapper">
+            <li key={INSERT_ENTRY_TEXT} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
+              {knownFrameworks.map(item => (
+              <li className="framework-item" key={item}>
 
-              {item}
-            </li>
-          ))}
+                {item}
+              </li>
+              ))}
+          </div>
         </ul>
       </div>
     </div>

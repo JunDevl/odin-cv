@@ -1,11 +1,17 @@
 :root {
   --primary-color: oklch(75% 0.4 265);
 
+  --white-1: oklch(from var(--primary-color) 99% 0.005 h);
+  --white-2: oklch(from var(--primary-color) 96% 0.005 h);
+  --white-3: oklch(from var(--primary-color) 93% 0.005 h);
 
+  --black-1: oklch(from var(--primary-color) 3% 0.005 h);
+  --black-2: oklch(from var(--primary-color) 6% 0.005 h);
 
   --input-height: 2.2rem;
   --input-border-radius: 0.9rem;
-  background-color: oklch(from var(--primary-color) 99% 0.02 h);
+
+  background-color: var(--white-2);
   font-size: 18px;
 
   font-synthesis: none;
@@ -44,32 +50,53 @@ h3 {
 
 input,
 button {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 input {
-  background-color: white;
+  background-color: var(--white-1);
   border-radius: var(--input-border-radius);
-  border: 1px solid black;
+  border: none;
   min-height: var(--input-height);
   padding-left: 1rem;
   box-sizing: border-box;
+  box-shadow: 1px 2px 5px 2px rgba(0, 0, 0, 0.15) inset;
+  transition: outline 50ms;
 }
 
 input:hover {
-  outline: none;
+  outline: 2px var(--black-2) dashed;
+}
+
+input:focus {
+  outline: 2px var(--primary-color) solid;
 }
 
 button[type="submit"] {
   background-color: oklch(from var(--primary-color) 60% 0.2 h);
   color: white;
   border: none;
-  width: 5rem;
-  height: 3rem;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  transition: all 100ms;
+}
+
+button[type="submit"]:hover {
+  background-color: oklch(from var(--primary-color) 50% 0.2 h);
+}
+
+button[type="submit"]:active {
+  background-color: var(--white-1);
+  color: oklch(from var(--primary-color) 60% 0.2 h);
+  outline: 2px solid oklch(from var(--primary-color) 60% 0.2 h);
+}
+
+input[type="file"] {
+  aspect-ratio: 1/1;
 }
 
 label {
-  margin-right: 1rem;
+  white-space: nowrap;
 }
 
 li {

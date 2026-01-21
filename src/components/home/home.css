@@ -1,17 +1,55 @@
 h1.main-title {
-  margin-top: 50vh;
+  margin-top: 30vh;
 }
 
 form.main {
-  background-color: oklch(from var(--primary-color) 99.5% 0.005 h);
+  background-color: var(--white-1);
   align-self: stretch;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-left: 5vw;
-  margin-right: 5vw;
-  padding: 2rem;
-  border: 1px solid black;
-  border-radius: 20px;
+  gap: 3rem;
+  margin-top: 2rem;
+  margin-left: 6vw;
+  margin-right: 6vw;
+  padding: 5rem;
+  border-radius: 3rem;
+  box-shadow: 0px -10px 10px -3px hsla(0, 0%, 0%, 0.15);
+}
+
+form.main div.label-input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+form.main>section {
+  background-color: var(--white-2);
+  border-radius: 2rem;
+  padding: 4rem;
+
+  --section-gap: 3rem;
+}
+
+form.main>section.personal-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  gap: 2rem;
+
+  &>div.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    gap: var(--section-gap);
+  }
+}
+
+form.main>section.contact-info {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  gap: var(--section-gap);
 }

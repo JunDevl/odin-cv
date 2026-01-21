@@ -10,20 +10,32 @@ const Home = () => {
       <h1 className="main-title">Test</h1>
 
       <form action="" className="main" onSubmit={(e) => e.preventDefault()}>
-        <section className="general-data">
+        <section className="personal-data">
           <input type="file" name="photo" id="photo" />
 
-          <label htmlFor="name">Full name:</label>
-          <input type="text" name="name" id="name"/>
+          <div className="wrapper">
+            <div className="label-input">  
+              <label htmlFor="name">Full name:</label>
+              <input type="text" name="name" id="name"/>
+            </div>
 
-          <label htmlFor="age">Age:</label>
-          <input type="number" name="age" id="age"/>
+            <div className="label-input">
+              <label htmlFor="age">Age:</label>
+              <input type="number" name="age" id="age"/>
+            </div>
+          </div>
+        </section>
 
-          <label htmlFor="email">Email:</label>
-          <input type="email" name="email" id="email" />
+        <section className="contact-info">
+          <div className="label-input">  
+            <label htmlFor="email">Email:</label>
+            <input type="email" name="email" id="email" />
+          </div>
 
-          <label htmlFor="phone">Phone number:</label>
-          <input type="tel" name="phone" id="phone" />
+          <div className="label-input">  
+            <label htmlFor="phone">Phone number:</label>
+            <input type="tel" name="phone" id="phone" />
+          </div>
         </section>
 
         <section className="professional-experience">
@@ -51,7 +63,7 @@ const Home = () => {
         </section>
 
         <button type="submit">
-          test bgn
+          Generate Curriculum Vitae
         </button>
       </form>
     </>
