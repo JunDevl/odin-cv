@@ -67,7 +67,7 @@ const InputList = ({itemsState, ...props}: Props) => {
           onMouseDown={(e) => e.preventDefault()}
         >
           <div className="wrapper">
-            <li key={INSERT_ENTRY_TEXT} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
+            <li key={null} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
               {knownFrameworks.map(item => (
               <li className="framework-item" key={item}>
 

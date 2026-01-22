@@ -34,9 +34,9 @@ ul.frameworks-list {
   transition: all 250ms;
   transition-behavior: allow-discrete;
   interpolate-size: allow-keywords;
-
   /*Basically only works on chrome, Edge and Opera... Why the f# did nobody implement this INCREDIBLY useful property onto their browsers? Smh.*/
-  &>div.wrapper {
+
+  &.overflows>div.wrapper {
     overflow-y: scroll;
 
     scrollbar-color: gray transparent;

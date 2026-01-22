@@ -1,0 +1,35 @@
+.cards {
+  display: flex;
+  align-items: stretch;
+  justify-content: start;
+  box-sizing: border-box;
+}
+
+.cards>li {
+  width: 14rem;
+  height: 17rem;
+  background-color: aquamarine;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.cards>.add {
+  padding: 0;
+  align-items: stretch;
+  justify-content: stretch;
+
+  &>button {
+    font-size: 3rem;
+    flex: 1;
+  }
+}
+
+.card-item {}
+
+.card-item>p {
+  margin: 0;
+}

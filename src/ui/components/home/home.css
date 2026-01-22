@@ -1,0 +1,80 @@
+.main-title {
+  margin-top: 30vh;
+}
+
+form.main {
+  background-color: var(--white-1);
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+  margin-left: 6vw;
+  margin-right: 6vw;
+  padding: 5rem;
+  border-radius: 3rem;
+  box-shadow: 0px -10px 10px -3px hsla(0, 0%, 0%, 0.15);
+}
+
+form.main .label-input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+form.main>.wrapper {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1rem;
+
+  flex-wrap: wrap;
+
+  &>div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &>:last-child {
+      flex: 1;
+    }
+  }
+}
+
+form.main>.wrapper>div>section {
+  background-color: var(--white-2);
+  border-radius: 2rem;
+  padding: 4rem;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+
+  --section-gap: 3rem;
+
+  &.personal-data {
+    flex-direction: column;
+    gap: 2rem;
+
+    &>#photo {
+      align-self: center;
+    }
+
+    &>div.wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: stretch;
+      gap: var(--section-gap);
+    }
+  }
+
+  &.contact-info {
+    gap: var(--section-gap);
+  }
+
+  &.professional-experience {
+    flex-direction: column;
+  }
+}
