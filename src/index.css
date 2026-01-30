@@ -1,17 +1,19 @@
 :root {
   --primary-color: oklch(75% 0.4 265);
 
-  --white-1: oklch(from var(--primary-color) 99% 0.005 h);
-  --white-2: oklch(from var(--primary-color) 96% 0.005 h);
-  --white-3: oklch(from var(--primary-color) 93% 0.005 h);
+  --white-1: oklch(from var(--primary-color) 99% 0.010 h);
+  --white-2: oklch(from var(--primary-color) 96% 0.010 h);
+  --white-3: oklch(from var(--primary-color) 93% 0.010 h);
+  --white-dark: oklch(from var(--primary-color) 90% 0.010 h);
+  --white-darkest: oklch(from var(--primary-color) 87% 0.010 h);
 
-  --black-1: oklch(from var(--primary-color) 3% 0.005 h);
-  --black-2: oklch(from var(--primary-color) 6% 0.005 h);
+  --black-1: oklch(from var(--primary-color) 3% 0.010 h);
+  --black-2: oklch(from var(--primary-color) 6% 0.010 h);
 
   --input-height: 2.2rem;
   --input-border-radius: 0.9rem;
 
-  background: linear-gradient(var(--white-2) 10%, var(--white-3) 90%);
+  background: linear-gradient(var(--white-dark) 10%, var(--white-2) 90%);
   font-size: 18px;
 
   font-synthesis: none;
@@ -61,7 +63,6 @@ input {
   padding-left: 1rem;
   box-sizing: border-box;
   box-shadow: 1px 2px 5px 2px rgba(0, 0, 0, 0.15) inset;
-  transition: outline 50ms;
 }
 
 input:focus {

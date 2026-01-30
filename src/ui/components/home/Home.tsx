@@ -3,14 +3,21 @@ import { useState } from "react"
 import InputList from "../inputList/InputList"
 import CardView from "../cardView/CardView"
 
-import type { JobExperience, AcademicExperience } from "../../types"
+import type { JobExperience, ProgrammingProjects, AcademicExperience } from "../../types"
 
 const boilerplateJob: JobExperience = {
-  companyName: '',
-  position: '',
-  responsibilitiesDescription: '',
+  companyName: 'Boring Co.',
+  position: 'Depressed Office Guy',
+  responsibilitiesDescription: 'Be depressed about everything',
   initDate: new Date(),
   finalDate: new Date()
+}
+
+const boilerplateProjects: ProgrammingProjects = {
+  title: "ChatGPT",
+  description: "Invented chatgpt",
+  tags: ["ai", "llm", "future"],
+  githubSource: "https://github.com/JunDevl"
 }
 
 const boilerplateAcademic: AcademicExperience = {
@@ -22,6 +29,7 @@ const boilerplateAcademic: AcademicExperience = {
 const Home = () => {
   const [knownFrameworks, setKnownFrameworks] = useState<string[]>([]);
   const [jobExperiences, setJobExperiences] = useState<JobExperience[]>([boilerplateJob]);
+  const [programmingProjects, setProgrammingProjects] = useState<ProgrammingProjects[]>([boilerplateProjects]);
   const [academicExperiences, setAcademicExperiences] = useState<AcademicExperience[]>([boilerplateAcademic]);
 
   return (
@@ -44,54 +52,54 @@ const Home = () => {
                   <label htmlFor="age">Age:</label>
                   <input type="number" name="age" id="age"/>
                 </div>
+
+                <div className="label-input">  
+                  <label htmlFor="email">Email:</label>
+                  <input type="email" name="email" id="email" />
+                </div>
+
+                <div className="label-input">  
+                  <label htmlFor="phone">Phone number:</label>
+                  <input type="tel" name="phone" id="phone" />
+                </div>
               </div>
             </section>
           </div>
 
           <div className="wrapper-col2">  
-            <section className="contact-info">
-              <div className="label-input">  
-                <label htmlFor="email">Email:</label>
-                <input type="email" name="email" id="email" />
-              </div>
-
-              <div className="label-input">  
-                <label htmlFor="phone">Phone number:</label>
-                <input type="tel" name="phone" id="phone" />
-              </div>
-            </section>
-
             <section className="professional-experience">
               <InputList 
-                itemsState={{knownFrameworks, setKnownFrameworks}} 
+                itemsState={{knownFrameworks, setKnownFrameworks}}
+                labelText="Known languages/frameworks:"
                 type="text" 
                 name="frameworks" 
                 id="frameworks" 
                 autoComplete="off"
               />
-
-              <CardView 
-                group="work-places" 
-                cards={{items: jobExperiences, setItems: setJobExperiences}} 
-                objectSchema={jobExperiences[0]}
-              />
+              <div className="work-places">
+                <label htmlFor="">Job experiences:</label>
+                <CardView 
+                  group="work-places-cards" 
+                  cards={{items: jobExperiences, setItems: setJobExperiences}} 
+                />
+              </div>
             </section>
           </div>
 
         </div>
 
         <section className="projects">
-          <div className="project">
-            <h2 className="title">Project Title</h2>
-
-            <h3 className="description">Project Description</h3>
-
-            <p className="tags">Javascript, HTML, CSS, React</p>
-          </div>
+          <CardView
+            group="projects-cards"
+            cards={{items: programmingProjects, setItems: setProgrammingProjects}}
+          />
         </section>
 
         <section className="academic-experience">
-          add degrees
+          <CardView 
+            group="degree-cards"
+            cards={{items: academicExperiences, setItems: setAcademicExperiences}}
+          />
         </section>
 
         <button type="submit">

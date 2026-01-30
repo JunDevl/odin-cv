@@ -2,9 +2,10 @@ import "./inputlist.css"
 import { useRef } from "react";
 
 interface Props extends React.HTMLProps<HTMLInputElement> {
-  itemsState: { knownFrameworks: string[], setKnownFrameworks: React.Dispatch<React.SetStateAction<string[]>> }
+  itemsState: { knownFrameworks: string[], setKnownFrameworks: React.Dispatch<React.SetStateAction<string[]>> },
+  labelText: string
 }
-const InputList = ({itemsState, ...props}: Props) => {
+const InputList = ({itemsState, labelText, ...props}: Props) => {
   const INSERT_ENTRY_TEXT = "+ Press enter to insert a new entry";
 
   const frameworksListElement = useRef<HTMLUListElement>(null);
@@ -12,9 +13,9 @@ const InputList = ({itemsState, ...props}: Props) => {
   const {knownFrameworks, setKnownFrameworks} = itemsState;
 
   const frameworksListIsFull = (): boolean => {
-    const MAXIMUM_CHILD_NODES = 5;
+    const MAXIMUM_OPTIONS = 5;
 
-    return knownFrameworks.length >= MAXIMUM_CHILD_NODES;
+    return knownFrameworks.length >= MAXIMUM_OPTIONS;
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -53,7 +54,7 @@ const InputList = ({itemsState, ...props}: Props) => {
       className="input-list label-input"
       // tabIndex={-1} wip
     >
-      <label htmlFor={props.name}>Known languages/frameworks:</label>
+      <label htmlFor={props.name}>{labelText}</label>
       <div className="input-wrapper">
         <input 
           {...props} 

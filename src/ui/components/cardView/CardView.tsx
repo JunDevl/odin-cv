@@ -5,10 +5,9 @@ interface Props<T> {
   group: string,
   cards: {items: T[], 
           setItems: React.Dispatch<React.SetStateAction<T[]>>}
-  objectSchema: T
 }
 
-const CardView = ({group, cards, objectSchema}: Props<any>) => {
+const CardView = <T extends Record<string, any>>({group, cards}: Props<T>) => {
   const {items, setItems} = cards;
 
   const [entryMode, setEntryMode] = useState<boolean>(false);
@@ -16,23 +15,51 @@ const CardView = ({group, cards, objectSchema}: Props<any>) => {
   const formElement = useRef<HTMLLIElement>(null);
 
   const handleNewCard = () => {
-    const inputs = formElement.current?.querySelectorAll("input"); // wip
+    const inputs = formElement.current!.querySelectorAll("input"); // wip
+
+    let formData: Record<string, any> = {};
+
+    inputs.forEach(input => {
+      const isDate = input.type === "date";
+
+      formData[[...input.classList.values()][0]] = isDate ? input.valueAsDate : input.value;
+    })
+
+    setEntryMode(false);
+
+    let emptyPropertiesCount = 0;
+    
+    Object.values(formData).forEach(val => emptyPropertiesCount += Number(!val));
+
+    console.log(emptyPropertiesCount);
+
+    setItems(i => [...i, formData as T]);
   }
 
   const newItemForm = 
-    <li key={undefined} ref={formElement}>
-      {Object.entries(objectSchema).map(([key, value]) => (
-        <input type={value instanceof Date ? "date" : "text"} className={key}></input>
-      ))}
+    <li key="_FORM" ref={formElement}>
+      {Object.entries(items[0]).map(([key, value]) => {
+        const isDate = value instanceof Date;
+        const capitalizedKey = `${key[0].toUpperCase()}${key.slice(1)}`
+
+        return (<>
+          {isDate && <label htmlFor={capitalizedKey}>{capitalizedKey}:</label>}
+          <input 
+            type={isDate ? "date" : "text"} 
+            className={`${key} card-input`}
+            id={capitalizedKey}
+            placeholder={isDate ? "" : capitalizedKey}
+          />
+        </>)
+      })}
       <div className="actions">
         <button onClick={() => handleNewCard()}>Ok</button>
-        <button>Cancel</button>
+        <button onClick={() => setEntryMode(false)}>Cancel</button>
       </div>
     </li>
 
   return (
     <ul className={`cards ${group}`}>
-      { /* Pretty slow operation with thousands of items */ }
       {items.map(item => {
         const entries = Object.entries(item);
 
@@ -52,7 +79,11 @@ const CardView = ({group, cards, objectSchema}: Props<any>) => {
         )
       })}
       {entryMode && newItemForm}
-      <li key={null} className="add" onClick={() => !entryMode && setEntryMode(true)}>
+      <li 
+        key="_ADD"
+        className="add" 
+        onClick={() => !entryMode && setEntryMode(true)}
+      >
         <button id={`add-${group}`}>
           &#x2b;
         </button>
