@@ -6,6 +6,10 @@
   gap: 1rem;
 }
 
+.cards button:focus {
+  outline: 1px solid blue;
+}
+
 .cards>li {
   width: 18rem;
   height: 20rem;

@@ -45,7 +45,7 @@ const Home = () => {
               <div className="wrapper">
                 <div className="label-input">  
                   <label htmlFor="name">Full name:</label>
-                  <input type="text" name="name" id="name"/>
+                  <input type="text" name="name" id="name" autoComplete="name" />
                 </div>
 
                 <div className="label-input">
@@ -55,12 +55,12 @@ const Home = () => {
 
                 <div className="label-input">  
                   <label htmlFor="email">Email:</label>
-                  <input type="email" name="email" id="email" />
+                  <input type="email" name="email" id="email" autoComplete="email" />
                 </div>
 
                 <div className="label-input">  
                   <label htmlFor="phone">Phone number:</label>
-                  <input type="tel" name="phone" id="phone" />
+                  <input type="tel" name="phone" id="phone" autoComplete="tel" />
                 </div>
               </div>
             </section>
@@ -77,7 +77,7 @@ const Home = () => {
                 autoComplete="off"
               />
               <div className="work-places">
-                <label htmlFor="">Job experiences:</label>
+                <label>Job experiences:</label>
                 <CardView 
                   group="work-places-cards" 
                   cards={{items: jobExperiences, setItems: setJobExperiences}} 

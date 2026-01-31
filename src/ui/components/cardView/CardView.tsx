@@ -79,12 +79,12 @@ const CardView = <T extends Record<string, any>>({group, cards}: Props<T>) => {
         )
       })}
       {entryMode && newItemForm}
-      <li 
-        key="_ADD"
-        className="add" 
-        onClick={() => !entryMode && setEntryMode(true)}
-      >
-        <button id={`add-${group}`}>
+      <li key="_ADD"className="add">
+        <button 
+          id={`add-${group}`} 
+          onClick={(e) => {!entryMode && setEntryMode(true); e.preventDefault()}}
+          type="button"
+        >
           &#x2b;
         </button>
       </li>

@@ -44,7 +44,7 @@ form.main>.wrapper {
   }
 }
 
-form.main>.wrapper>div>section {
+form.main section {
   background-color: var(--white-2);
   border-radius: 2rem;
   padding: 4rem;
@@ -63,7 +63,7 @@ form.main>.wrapper>div>section {
       align-self: center;
     }
 
-    &>div.wrapper {
+    &>.wrapper {
       display: flex;
       flex-direction: column;
       align-items: end;

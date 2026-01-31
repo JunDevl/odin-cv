@@ -6,7 +6,7 @@ interface Props extends React.HTMLProps<HTMLInputElement> {
   labelText: string
 }
 const InputList = ({itemsState, labelText, ...props}: Props) => {
-  const INSERT_ENTRY_TEXT = "+ Press enter to insert a new entry";
+  const INSERT_ENTRY_TEXT = "+ Press enter to insert";
 
   const frameworksListElement = useRef<HTMLUListElement>(null);
 
@@ -28,6 +28,7 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
       frameworksListElement.current!.style.height = `calc(var(--input-height)*${knownFrameworks.length + 3})`;
 
       setKnownFrameworks([...knownFrameworks, target.value])
+      frameworksListElement.current!.attributeStyleMap.set("--item-count", knownFrameworks.length);
 
       if (frameworksListIsFull()) {
         frameworksListElement.current!.style.maxHeight = !frameworksListElement.current!.classList.contains("overflows") ? frameworksListElement.current!.style.height : frameworksListElement.current!.style.maxHeight;
@@ -41,14 +42,6 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
     }
   }
 
-  const handleFocus = () => {
-    frameworksListElement.current!.style.height = `calc(var(--input-height)*${knownFrameworks.length + 2})`;
-  }
-
-  const handleBlur = () => {
-    frameworksListElement.current!.style.height = "100%";
-  }
-
   return (
     <div 
       className="input-list label-input"
@@ -59,8 +52,6 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
         <input 
           {...props} 
           onKeyDown={(e) => handleKeyDown(e)}
-          onFocus={() => handleFocus()}
-          onBlur={() => handleBlur()}
         />
         <ul 
           className="frameworks-list" 
@@ -71,7 +62,6 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
             <li key={null} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
               {knownFrameworks.map(item => (
               <li className="framework-item" key={item}>
-
                 {item}
               </li>
               ))}
