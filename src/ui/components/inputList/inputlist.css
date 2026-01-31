@@ -18,9 +18,8 @@
 .frameworks-list {
   --item-count: 0;
 
+  overflow: hidden;
   border-radius: var(--input-border-radius);
-  display: block flex;
-  visibility: hidden;
   box-sizing: inherit;
   background-color: white;
   position: absolute;
@@ -32,7 +31,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  animation: 250ms close;
+  transition: height 250ms;
   interpolate-size: allow-keywords;
   /*Basically only works on chrome, Edge and Opera... Why the f# did nobody implement this INCREDIBLY useful property onto their browsers? Smh.*/
 
@@ -51,9 +50,7 @@
 }
 
 .input-wrapper>input:focus+.frameworks-list {
-  visibility: visible;
   height: calc(var(--input-height)*(var(--item-count)+2));
-  animation: 250ms open;
   interpolate-size: allow-keywords;
 }
 

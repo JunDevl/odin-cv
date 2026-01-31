@@ -1,5 +1,5 @@
 import "./inputlist.css"
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface Props extends React.HTMLProps<HTMLInputElement> {
   itemsState: { knownFrameworks: string[], setKnownFrameworks: React.Dispatch<React.SetStateAction<string[]>> },
@@ -9,6 +9,7 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
   const INSERT_ENTRY_TEXT = "+ Press enter to insert";
 
   const frameworksListElement = useRef<HTMLUListElement>(null);
+  const input = useRef<HTMLInputElement>(null);
 
   const {knownFrameworks, setKnownFrameworks} = itemsState;
 
@@ -18,20 +19,16 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
     return knownFrameworks.length >= MAXIMUM_OPTIONS;
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
+  const handleNewEntry = (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    const insertEntryAndStyleWrapper = () => {
+      //frameworksListElement.current!.style.height = `calc(var(--input-height)*${knownFrameworks.length + 3})`;
 
-    if (target.value !== "" && 
-        target.value !== INSERT_ENTRY_TEXT &&
-        e.key === "Enter" && 
-        !knownFrameworks.includes(target.value)) {
-      frameworksListElement.current!.style.height = `calc(var(--input-height)*${knownFrameworks.length + 3})`;
-
-      setKnownFrameworks([...knownFrameworks, target.value])
-      frameworksListElement.current!.attributeStyleMap.set("--item-count", knownFrameworks.length);
+      setKnownFrameworks([...knownFrameworks, input.current!.value])
 
       if (frameworksListIsFull()) {
-        frameworksListElement.current!.style.maxHeight = !frameworksListElement.current!.classList.contains("overflows") ? frameworksListElement.current!.style.height : frameworksListElement.current!.style.maxHeight;
+        if (frameworksListElement.current!.classList.contains("overflows")) return;
+
+        frameworksListElement.current!.style.maxHeight = window.getComputedStyle(frameworksListElement.current!).height;
         
         frameworksListElement.current!.classList.add("overflows");
         return;
@@ -40,7 +37,23 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
       frameworksListElement.current!.style.maxHeight = 'none';
       frameworksListElement.current!.classList.remove("overflows");
     }
+
+    const validEntry = input.current!.value !== "" && 
+                       input.current!.value !== INSERT_ENTRY_TEXT && 
+                       !knownFrameworks.includes(input.current!.value);
+
+    if ("key" in e && e.key === "Enter" && validEntry) {
+      insertEntryAndStyleWrapper();
+    }
+
+    if ("button" in e && validEntry) {
+      insertEntryAndStyleWrapper();
+    }
   }
+
+  useEffect(() => {
+    frameworksListElement.current!.attributeStyleMap.set("--item-count", knownFrameworks.length);
+  }, [knownFrameworks])
 
   return (
     <div 
@@ -51,7 +64,8 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
       <div className="input-wrapper">
         <input 
           {...props} 
-          onKeyDown={(e) => handleKeyDown(e)}
+          onKeyDown={(e) => handleNewEntry(e)}
+          ref={input}
         />
         <ul 
           className="frameworks-list" 
@@ -59,7 +73,8 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
           onMouseDown={(e) => e.preventDefault()}
         >
           <div className="wrapper">
-            <li key={null} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
+            <li 
+              key={null} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
               {knownFrameworks.map(item => (
               <li className="framework-item" key={item}>
                 {item}
