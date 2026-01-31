@@ -2,45 +2,45 @@ import "./inputlist.css"
 import { useEffect, useRef } from "react";
 
 interface Props extends React.HTMLProps<HTMLInputElement> {
-  itemsState: { knownFrameworks: string[], setKnownFrameworks: React.Dispatch<React.SetStateAction<string[]>> },
+  listState: { list: string[], setList: React.Dispatch<React.SetStateAction<string[]>> },
   labelText: string
 }
-const InputList = ({itemsState, labelText, ...props}: Props) => {
+const InputList = ({listState, labelText, ...props}: Props) => {
   const INSERT_ENTRY_TEXT = "+ Press enter to insert";
 
-  const frameworksListElement = useRef<HTMLUListElement>(null);
+  const contextList = useRef<HTMLUListElement>(null);
   const input = useRef<HTMLInputElement>(null);
 
-  const {knownFrameworks, setKnownFrameworks} = itemsState;
+  const {list, setList} = listState;
 
   const frameworksListIsFull = (): boolean => {
     const MAXIMUM_OPTIONS = 5;
 
-    return knownFrameworks.length >= MAXIMUM_OPTIONS;
+    return list.length >= MAXIMUM_OPTIONS;
   }
 
-  const handleNewEntry = (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+  const addNewEntry = (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const insertEntryAndStyleWrapper = () => {
-      //frameworksListElement.current!.style.height = `calc(var(--input-height)*${knownFrameworks.length + 3})`;
+      //contextList.current!.style.height = `calc(var(--input-height)*${list.length + 3})`;
 
-      setKnownFrameworks([...knownFrameworks, input.current!.value])
+      setList([...list, input.current!.value])
 
       if (frameworksListIsFull()) {
-        if (frameworksListElement.current!.classList.contains("overflows")) return;
+        if (contextList.current!.classList.contains("overflows")) return;
 
-        frameworksListElement.current!.style.maxHeight = window.getComputedStyle(frameworksListElement.current!).height;
+        contextList.current!.style.maxHeight = window.getComputedStyle(contextList.current!).height;
         
-        frameworksListElement.current!.classList.add("overflows");
+        contextList.current!.classList.add("overflows");
         return;
       }
 
-      frameworksListElement.current!.style.maxHeight = 'none';
-      frameworksListElement.current!.classList.remove("overflows");
+      contextList.current!.style.maxHeight = 'none';
+      contextList.current!.classList.remove("overflows");
     }
 
     const validEntry = input.current!.value !== "" && 
                        input.current!.value !== INSERT_ENTRY_TEXT && 
-                       !knownFrameworks.includes(input.current!.value);
+                       !list.includes(input.current!.value);
 
     if ("key" in e && e.key === "Enter" && validEntry) {
       insertEntryAndStyleWrapper();
@@ -51,9 +51,18 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
     }
   }
 
+  const removeEntry = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    const entry = (e.target as HTMLSpanElement).previousSibling?.textContent;
+
+    const updatedList = list.filter(val => val !== entry);
+
+    setList(updatedList);
+  }
+
   useEffect(() => {
-    frameworksListElement.current!.attributeStyleMap.set("--item-count", knownFrameworks.length);
-  }, [knownFrameworks])
+    contextList.current!.attributeStyleMap.set("--item-count", list.length);
+    console.log(list);
+  }, [list])
 
   return (
     <div 
@@ -64,20 +73,21 @@ const InputList = ({itemsState, labelText, ...props}: Props) => {
       <div className="input-wrapper">
         <input 
           {...props} 
-          onKeyDown={(e) => handleNewEntry(e)}
+          onKeyDown={e => addNewEntry(e)}
           ref={input}
         />
         <ul 
           className="frameworks-list" 
-          ref={frameworksListElement}
+          ref={contextList}
           onMouseDown={(e) => e.preventDefault()}
         >
           <div className="wrapper">
             <li 
               key={null} className="insert-entry">{INSERT_ENTRY_TEXT}</li>
-              {knownFrameworks.map(item => (
+              {list.map(item => (
               <li className="framework-item" key={item}>
-                {item}
+                <span className="text">{item}</span>
+                <span className="close" onClick={e => removeEntry(e)}>&#10005;</span>
               </li>
               ))}
           </div>

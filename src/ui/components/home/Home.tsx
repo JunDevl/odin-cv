@@ -69,7 +69,7 @@ const Home = () => {
           <div className="wrapper-col2">  
             <section className="professional-experience">
               <InputList 
-                itemsState={{knownFrameworks, setKnownFrameworks}}
+                listState={{list: knownFrameworks, setList: setKnownFrameworks}}
                 labelText="Known languages/frameworks:"
                 type="text" 
                 name="frameworks" 
