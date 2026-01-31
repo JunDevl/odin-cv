@@ -3,18 +3,19 @@ import "./cardview.css";
 
 interface Props<T> {
   group: string,
+  schema: T,
   cards: {items: T[], 
           setItems: React.Dispatch<React.SetStateAction<T[]>>}
 }
 
-const CardView = <T extends Record<string, any>>({group, cards}: Props<T>) => {
+const CardView = <T extends Record<string, any>>({group, schema, cards}: Props<T>) => {
   const {items, setItems} = cards;
 
   const [entryMode, setEntryMode] = useState<boolean>(false);
 
   const formElement = useRef<HTMLLIElement>(null);
 
-  const handleNewCard = () => {
+  const insertCard = () => {
     const inputs = formElement.current!.querySelectorAll("input"); // wip
 
     let formData: Record<string, any> = {};
@@ -36,9 +37,18 @@ const CardView = <T extends Record<string, any>>({group, cards}: Props<T>) => {
     setItems(i => [...i, formData as T]);
   }
 
-  const newItemForm = 
+  const removeCard = (key: string) => {
+    const filteredItems = items.filter(item => {
+      const concatValues = Object.values(item).reduce((prev, cur) => String(prev) + String(cur));
+      return concatValues !== key;
+    })
+
+    setItems(filteredItems);
+  }
+
+  const newItemForm =
     <li key="_FORM" ref={formElement}>
-      {Object.entries(items[0]).map(([key, value]) => {
+      {Object.entries(schema).map(([key, value]) => {
         const isDate = value instanceof Date;
         const capitalizedKey = `${key[0].toUpperCase()}${key.slice(1)}`
 
@@ -53,7 +63,7 @@ const CardView = <T extends Record<string, any>>({group, cards}: Props<T>) => {
         </>)
       })}
       <div className="actions">
-        <button onClick={() => handleNewCard()}>Ok</button>
+        <button onClick={() => insertCard()}>Ok</button>
         <button onClick={() => setEntryMode(false)}>Cancel</button>
       </div>
     </li>
@@ -66,7 +76,7 @@ const CardView = <T extends Record<string, any>>({group, cards}: Props<T>) => {
         let uniqueKey = "";
         let children = [];
         for (const [key, value] of entries) {
-          uniqueKey += String(value)
+          uniqueKey += String(value);
           children.push(
             <p className={key}>{value instanceof Date ? value.toLocaleDateString() : String(value)}</p>
           );
@@ -74,6 +84,7 @@ const CardView = <T extends Record<string, any>>({group, cards}: Props<T>) => {
 
         return (
           <li key={uniqueKey} className="card-item">
+            <div className="close" onClick={() => removeCard(uniqueKey)}>&#10005;</div>
             {children}
           </li>
         )

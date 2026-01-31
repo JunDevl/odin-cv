@@ -7,47 +7,38 @@ interface Props extends React.HTMLProps<HTMLInputElement> {
 }
 const InputList = ({listState, labelText, ...props}: Props) => {
   const INSERT_ENTRY_TEXT = "+ Press enter to insert";
+  const MAXIMUM_LIST_ITEMS = 5
 
   const contextList = useRef<HTMLUListElement>(null);
   const input = useRef<HTMLInputElement>(null);
 
   const {list, setList} = listState;
 
-  const frameworksListIsFull = (): boolean => {
-    const MAXIMUM_OPTIONS = 5;
+  const updateWrapperStyleSheet = () => {
+    if (list.length >= MAXIMUM_LIST_ITEMS) {
+      if (contextList.current!.classList.contains("overflows")) return;
 
-    return list.length >= MAXIMUM_OPTIONS;
+      contextList.current!.style.maxHeight = window.getComputedStyle(contextList.current!).height;
+      
+      contextList.current!.classList.add("overflows");
+      return;
+    }
+
+    contextList.current!.style.maxHeight = 'none';
+    contextList.current!.classList.remove("overflows");
   }
 
   const addNewEntry = (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    const insertEntryAndStyleWrapper = () => {
-      //contextList.current!.style.height = `calc(var(--input-height)*${list.length + 3})`;
-
-      setList([...list, input.current!.value])
-
-      if (frameworksListIsFull()) {
-        if (contextList.current!.classList.contains("overflows")) return;
-
-        contextList.current!.style.maxHeight = window.getComputedStyle(contextList.current!).height;
-        
-        contextList.current!.classList.add("overflows");
-        return;
-      }
-
-      contextList.current!.style.maxHeight = 'none';
-      contextList.current!.classList.remove("overflows");
-    }
-
     const validEntry = input.current!.value !== "" && 
                        input.current!.value !== INSERT_ENTRY_TEXT && 
                        !list.includes(input.current!.value);
 
     if ("key" in e && e.key === "Enter" && validEntry) {
-      insertEntryAndStyleWrapper();
+      setList([...list, input.current!.value]);
     }
 
     if ("button" in e && validEntry) {
-      insertEntryAndStyleWrapper();
+      setList([...list, input.current!.value]);
     }
   }
 
@@ -61,7 +52,7 @@ const InputList = ({listState, labelText, ...props}: Props) => {
 
   useEffect(() => {
     contextList.current!.attributeStyleMap.set("--item-count", list.length);
-    console.log(list);
+    updateWrapperStyleSheet();
   }, [list])
 
   return (

@@ -33,7 +33,27 @@
   }
 }
 
-.card-item {}
+.card-item {
+  position: relative;
+
+  &>.close {
+    font-size: 1.6rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    cursor: default;
+  }
+
+  &>.close:hover {
+    background-color: red;
+    border-radius: 100vh;
+  }
+}
 
 .card-item>p {
   margin: 0;

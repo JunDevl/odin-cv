@@ -1,30 +1,10 @@
-import "./home.css"
-import { useState } from "react"
-import InputList from "../inputList/InputList"
-import CardView from "../cardView/CardView"
+import "./home.css";
+import { useState } from "react";
+import InputList from "../inputList/InputList";
+import CardView from "../cardView/CardView";
 
-import type { JobExperience, ProgrammingProjects, AcademicExperience } from "../../types"
-
-const boilerplateJob: JobExperience = {
-  companyName: 'Boring Co.',
-  position: 'Depressed Office Guy',
-  responsibilitiesDescription: 'Be depressed about everything',
-  initDate: new Date(),
-  finalDate: new Date()
-}
-
-const boilerplateProjects: ProgrammingProjects = {
-  title: "ChatGPT",
-  description: "Invented chatgpt",
-  tags: ["ai", "llm", "future"],
-  githubSource: "https://github.com/JunDevl"
-}
-
-const boilerplateAcademic: AcademicExperience = {
-  institutionName: '',
-  area: '',
-  date: new Date()
-}
+import type { JobExperience, ProgrammingProjects, AcademicExperience } from "../../types";
+import { boilerplateJob, boilerplateProjects, boilerplateAcademic } from "../../boilerplate";
 
 const Home = () => {
   const [knownFrameworks, setKnownFrameworks] = useState<string[]>([]);
@@ -79,7 +59,8 @@ const Home = () => {
               <div className="work-places">
                 <label>Job experiences:</label>
                 <CardView 
-                  group="work-places-cards" 
+                  group="work-places-cards"
+                  schema={boilerplateJob}
                   cards={{items: jobExperiences, setItems: setJobExperiences}} 
                 />
               </div>
@@ -91,6 +72,7 @@ const Home = () => {
         <section className="projects">
           <CardView
             group="projects-cards"
+            schema={boilerplateProjects}
             cards={{items: programmingProjects, setItems: setProgrammingProjects}}
           />
         </section>
@@ -98,6 +80,7 @@ const Home = () => {
         <section className="academic-experience">
           <CardView 
             group="degree-cards"
+            schema={boilerplateAcademic}
             cards={{items: academicExperiences, setItems: setAcademicExperiences}}
           />
         </section>

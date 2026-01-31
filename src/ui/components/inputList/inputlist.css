@@ -9,6 +9,7 @@
   align-items: stretch;
   justify-content: stretch;
   box-sizing: border-box;
+  z-index: 1;
 }
 
 .input-wrapper>input {
