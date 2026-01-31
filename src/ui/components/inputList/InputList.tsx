@@ -2,17 +2,17 @@ import "./inputlist.css"
 import { useEffect, useRef } from "react";
 
 interface Props extends React.HTMLProps<HTMLInputElement> {
-  listState: { list: string[], setList: React.Dispatch<React.SetStateAction<string[]>> },
   labelText: string
+  listState: [list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>],
 }
-const InputList = ({listState, labelText, ...props}: Props) => {
+const InputList = ({labelText, listState, ...props}: Props) => {
   const INSERT_ENTRY_TEXT = "+ Press enter to insert";
   const MAXIMUM_LIST_ITEMS = 5
 
   const contextList = useRef<HTMLUListElement>(null);
   const input = useRef<HTMLInputElement>(null);
 
-  const {list, setList} = listState;
+  const [list, setList] = listState;
 
   const updateWrapperStyleSheet = () => {
     if (list.length >= MAXIMUM_LIST_ITEMS) {

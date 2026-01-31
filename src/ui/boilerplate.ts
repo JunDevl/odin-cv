@@ -16,7 +16,7 @@ export const boilerplateProjects: ProgrammingProjects = {
 }
 
 export const boilerplateAcademic: AcademicExperience = {
-  institutionName: '',
-  area: '',
+  institutionName: 'Harvard',
+  area: 'World Domination',
   date: new Date()
 }

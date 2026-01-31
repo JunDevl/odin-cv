@@ -4,12 +4,12 @@ import "./cardview.css";
 interface Props<T> {
   group: string,
   schema: T,
-  cards: {items: T[], 
-          setItems: React.Dispatch<React.SetStateAction<T[]>>}
+  cards: [items: T[], 
+          setItems: React.Dispatch<React.SetStateAction<T[]>>]
 }
 
 const CardView = <T extends Record<string, any>>({group, schema, cards}: Props<T>) => {
-  const {items, setItems} = cards;
+  const [items, setItems] = cards;
 
   const [entryMode, setEntryMode] = useState<boolean>(false);
 

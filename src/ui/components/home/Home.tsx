@@ -1,5 +1,6 @@
 import "./home.css";
 import { useState } from "react";
+import PhotoPicker from "../photoPicker/PhotoPicker";
 import InputList from "../inputList/InputList";
 import CardView from "../cardView/CardView";
 
@@ -7,6 +8,7 @@ import type { JobExperience, ProgrammingProjects, AcademicExperience } from "../
 import { boilerplateJob, boilerplateProjects, boilerplateAcademic } from "../../boilerplate";
 
 const Home = () => {
+  const [photo, setPhoto] = useState<File>();
   const [knownFrameworks, setKnownFrameworks] = useState<string[]>([]);
   const [jobExperiences, setJobExperiences] = useState<JobExperience[]>([boilerplateJob]);
   const [programmingProjects, setProgrammingProjects] = useState<ProgrammingProjects[]>([boilerplateProjects]);
@@ -20,7 +22,7 @@ const Home = () => {
         <div className="wrapper">
           <div className="wrapper-col1">
             <section className="personal-data">
-              <input type="file" name="photo" id="photo" />
+              <PhotoPicker photoState={[photo, setPhoto]}/>
 
               <div className="wrapper">
                 <div className="label-input">  
@@ -49,7 +51,7 @@ const Home = () => {
           <div className="wrapper-col2">  
             <section className="professional-experience">
               <InputList 
-                listState={{list: knownFrameworks, setList: setKnownFrameworks}}
+                listState={[knownFrameworks, setKnownFrameworks]}
                 labelText="Known languages/frameworks:"
                 type="text" 
                 name="frameworks" 
@@ -61,7 +63,7 @@ const Home = () => {
                 <CardView 
                   group="work-places-cards"
                   schema={boilerplateJob}
-                  cards={{items: jobExperiences, setItems: setJobExperiences}} 
+                  cards={[jobExperiences, setJobExperiences]} 
                 />
               </div>
             </section>
@@ -73,7 +75,7 @@ const Home = () => {
           <CardView
             group="projects-cards"
             schema={boilerplateProjects}
-            cards={{items: programmingProjects, setItems: setProgrammingProjects}}
+            cards={[programmingProjects, setProgrammingProjects]}
           />
         </section>
 
@@ -81,7 +83,7 @@ const Home = () => {
           <CardView 
             group="degree-cards"
             schema={boilerplateAcademic}
-            cards={{items: academicExperiences, setItems: setAcademicExperiences}}
+            cards={[academicExperiences, setAcademicExperiences]}
           />
         </section>
 

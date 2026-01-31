@@ -59,10 +59,6 @@ form.main section {
     gap: 2rem;
     align-self: center;
 
-    &>#photo {
-      align-self: center;
-    }
-
     &>.wrapper {
       display: flex;
       flex-direction: column;
