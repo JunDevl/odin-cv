@@ -1,3 +1,15 @@
+export type CurriculumForm = {
+  picture: File,
+  name: string,
+  age: number,
+  email: string,
+  tel: string,
+  techTags: string[], // every piece of programming tech the candidate knows (could be programming languages, frameworks, libraries)
+  jobExperiences: JobExperience[],
+  programmingProjects: ProgrammingProjects[],
+  academicExperiences: AcademicExperience[]
+}
+
 export type JobExperience = {
   companyName: string,
   position: string,

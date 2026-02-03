@@ -33,12 +33,11 @@ const InputList = ({labelText, listState, ...props}: Props) => {
                        input.current!.value !== INSERT_ENTRY_TEXT && 
                        !list.includes(input.current!.value);
 
-    if ("key" in e && e.key === "Enter" && validEntry) {
-      setList([...list, input.current!.value]);
-    }
+    if (!validEntry) return;
 
-    if ("button" in e && validEntry) {
+    if (("key" in e && e.key === "Enter") || "button" in e) {
       setList([...list, input.current!.value]);
+      input.current!.value = ""
     }
   }
 

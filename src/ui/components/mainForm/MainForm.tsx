@@ -4,25 +4,51 @@ import PhotoPicker from "../photoPicker/PhotoPicker";
 import InputList from "../inputList/InputList";
 import CardView from "../cardView/CardView";
 
-import type { JobExperience, ProgrammingProjects, AcademicExperience } from "../../types";
+import type { CurriculumForm, JobExperience, ProgrammingProjects, AcademicExperience } from "../../types";
 import { boilerplateJob, boilerplateProjects, boilerplateAcademic } from "../../boilerplate";
 
-const MainForm = () => {
-  const [photo, setPhoto] = useState<File | null>(null);
+interface Props {
+  formState: [form: CurriculumForm | null, React.Dispatch<React.SetStateAction<CurriculumForm | null>>]
+}
+
+const MainForm = ({formState}: Props) => {
+  const [form, setForm] = formState;
+
+  const [picture, setPicture] = useState<File | null>(null);
   const [knownFrameworks, setKnownFrameworks] = useState<string[]>([]);
   const [jobExperiences, setJobExperiences] = useState<JobExperience[]>([boilerplateJob]);
   const [programmingProjects, setProgrammingProjects] = useState<ProgrammingProjects[]>([boilerplateProjects]);
   const [academicExperiences, setAcademicExperiences] = useState<AcademicExperience[]>([boilerplateAcademic]);
 
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!picture) throw new Error("Can't generate a curriculum without a picture of a face!");
+
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    setForm({
+      picture,
+      name: formData.get("name") as string,
+      age: Number(formData.get("age")),
+      email: formData.get("email") as string,
+      tel: formData.get("phone") as string,
+      techTags: knownFrameworks,
+      jobExperiences,
+      programmingProjects,
+      academicExperiences
+    })
+  }
+
   return (
     <>
       <h1 className="main-title">Test</h1>
 
-      <form action="" className="main" onSubmit={(e) => e.preventDefault()}>
+      <form action="" className="main" onSubmit={e => submitForm(e)}>
         <div className="wrapper">
           <div className="wrapper-col1">
             <section className="personal-data">
-              <PhotoPicker photoState={[photo, setPhoto]}/>
+              <PhotoPicker photoState={[picture, setPicture]}/>
 
               <div className="wrapper">
                 <div className="label-input">  
