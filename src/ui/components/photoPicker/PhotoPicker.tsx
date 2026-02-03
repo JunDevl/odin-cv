@@ -1,7 +1,7 @@
 import "./photoPicker.css";
 
 interface Props {
-  photoState: [photo: File | undefined, setPhoto: React.Dispatch<React.SetStateAction<File | undefined>>]
+  photoState: [photo: File | null, setPhoto: React.Dispatch<React.SetStateAction<File | null>>]
 }
 
 const PhotoPicker = ({photoState}: Props) => {
@@ -11,9 +11,14 @@ const PhotoPicker = ({photoState}: Props) => {
     const picker = e.target as HTMLInputElement
     const file = picker.files?.item(0);
 
-    if (!file) {picker.style.backgroundColor = "var(--white-1)"; return;};
+    if (!file) {
+      picker.style.backgroundColor = "var(--white-1)";
+      setPhoto(null);
+      return
+    };
 
     picker.style.backgroundImage = `url(${URL.createObjectURL(file)})`
+    setPhoto(file);
   }
   
   return (

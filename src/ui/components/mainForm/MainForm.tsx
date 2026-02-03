@@ -1,4 +1,4 @@
-import "./home.css";
+import "./mainForm.css";
 import { useState } from "react";
 import PhotoPicker from "../photoPicker/PhotoPicker";
 import InputList from "../inputList/InputList";
@@ -7,8 +7,8 @@ import CardView from "../cardView/CardView";
 import type { JobExperience, ProgrammingProjects, AcademicExperience } from "../../types";
 import { boilerplateJob, boilerplateProjects, boilerplateAcademic } from "../../boilerplate";
 
-const Home = () => {
-  const [photo, setPhoto] = useState<File>();
+const MainForm = () => {
+  const [photo, setPhoto] = useState<File | null>(null);
   const [knownFrameworks, setKnownFrameworks] = useState<string[]>([]);
   const [jobExperiences, setJobExperiences] = useState<JobExperience[]>([boilerplateJob]);
   const [programmingProjects, setProgrammingProjects] = useState<ProgrammingProjects[]>([boilerplateProjects]);
@@ -95,4 +95,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default MainForm
