@@ -4,14 +4,15 @@ import PhotoPicker from "../photoPicker/PhotoPicker";
 import InputList from "../inputList/InputList";
 import CardView from "../cardView/CardView";
 
-import type { CurriculumForm, JobExperience, ProgrammingProjects, AcademicExperience } from "../../types";
+import type { CurriculumForm, JobExperience, ProgrammingProjects, AcademicExperience, Tab } from "../../types";
 import { boilerplateJob, boilerplateProjects, boilerplateAcademic } from "../../boilerplate";
 
 interface Props {
   formState: [form: CurriculumForm | null, React.Dispatch<React.SetStateAction<CurriculumForm | null>>]
+  tabState: [tab: Tab, setTab: React.Dispatch<React.SetStateAction<Tab>>]
 }
 
-const MainForm = ({formState}: Props) => {
+const MainForm = ({formState, tabState}: Props) => {
   const [form, setForm] = formState;
 
   const [picture, setPicture] = useState<File | null>(null);
@@ -79,6 +80,7 @@ const MainForm = ({formState}: Props) => {
               <InputList 
                 listState={[knownFrameworks, setKnownFrameworks]}
                 labelText="Known languages/frameworks:"
+                maxItems={5}
                 type="text" 
                 name="frameworks" 
                 id="frameworks" 

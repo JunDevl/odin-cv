@@ -2,12 +2,12 @@ import "./inputlist.css"
 import { useEffect, useRef } from "react";
 
 interface Props extends React.HTMLProps<HTMLInputElement> {
-  labelText: string
+  labelText: string,
+  maxItems: number,
   listState: [list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>],
 }
-const InputList = ({labelText, listState, ...props}: Props) => {
+const InputList = ({labelText, maxItems, listState, ...props}: Props) => {
   const INSERT_ENTRY_TEXT = "+ Press enter to insert";
-  const MAXIMUM_LIST_ITEMS = 5
 
   const contextList = useRef<HTMLUListElement>(null);
   const input = useRef<HTMLInputElement>(null);
@@ -15,7 +15,7 @@ const InputList = ({labelText, listState, ...props}: Props) => {
   const [list, setList] = listState;
 
   const updateWrapperStyleSheet = () => {
-    if (list.length >= MAXIMUM_LIST_ITEMS) {
+    if (list.length >= maxItems) {
       if (contextList.current!.classList.contains("overflows")) return;
 
       contextList.current!.style.maxHeight = window.getComputedStyle(contextList.current!).height;

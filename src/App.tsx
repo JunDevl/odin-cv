@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import MainForm from './ui/components/mainForm/MainForm'
+import Curriculum from './ui/components/finishedCurriculum/Curriculum';
 
-import type { CurriculumForm } from './ui/types';
-
-type Tab = "form" | "curriculum_preview"
+import type { CurriculumForm, Tab } from './ui/types';
 
 function App() {
   const [form, setForm] = useState<CurriculumForm | null>(null);
@@ -14,8 +13,8 @@ function App() {
   return (
     <>
       {tab === "form" ?
-        <MainForm formState={[form, setForm]}/> :
-        null
+        <MainForm formState={[form, setForm]} tabState={[tab, setTab]}/> :
+        <Curriculum filledForm={form as CurriculumForm} tabState={[tab, setTab]}/>
       }
     </>
   )

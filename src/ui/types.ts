@@ -30,3 +30,5 @@ export type AcademicExperience = {
   area: string,
   date: Date | null
 }
+
+export type Tab = "form" | "curriculum_preview"
