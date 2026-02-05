@@ -1,12 +1,10 @@
 import "./photoPicker.css";
 
-interface Props {
-  photoState: [photo: File | null, setPhoto: React.Dispatch<React.SetStateAction<File | null>>]
+interface PhotoPickerProps {
+  setPhoto: React.Dispatch<React.SetStateAction<File | null>>
 }
 
-const PhotoPicker = ({photoState}: Props) => {
-  const [photo, setPhoto] = photoState;
-
+const PhotoPicker = ({setPhoto}: PhotoPickerProps) => {
   const handleFile = (e: React.FormEvent<HTMLInputElement>) => {
     const picker = e.target as HTMLInputElement
     const file = picker.files?.item(0);
@@ -22,10 +20,10 @@ const PhotoPicker = ({photoState}: Props) => {
   }
   
   return (
-    <input 
-      type="file" 
-      accept=".png, .jpg, .jpeg" 
-      name="photo" id="photo" 
+    <input
+      type="file"
+      accept=".png, .jpg, .jpeg"
+      name="photo" id="photo"
       onInput={(e) => handleFile(e)}
     />
   )

@@ -2,47 +2,55 @@ import "./curriculum.css"
 
 import type { CurriculumForm, Tab } from "../../types"
 
-interface Props {
-  filledForm: CurriculumForm
-  tabState: [tab: Tab, setTab: React.Dispatch<React.SetStateAction<Tab>>]
+interface CardsProps {
+  className: string,
+  title: string,
+  list: Record<string, any>[]
 }
 
-const Curriculum = ({filledForm, tabState}: Props) => {
+const Cards = ({className, title, list}: CardsProps) => (
+  <section className={`${className} cards`}>
+    <h2>{title}</h2>
+
+    <ul>
+      {list.map(card => {
+        const entries = Object.entries(card);
+
+        let uniqueKey = "";
+        let children = [];
+        for (const [key, value] of entries) {
+          uniqueKey += String(value);
+          children.push(
+            <p className={key}>{value instanceof Date ? value.toLocaleDateString() : String(value)}</p>
+          );
+        };
+
+        return (
+          <li key={uniqueKey} className="card-item">
+            {children}
+          </li>
+        )
+      })}
+    </ul>
+  </section>
+)
+
+interface CurriculumProps {
+  filledForm: CurriculumForm
+  setTab: React.Dispatch<React.SetStateAction<Tab>>
+}
+
+const Curriculum = ({filledForm, setTab}: CurriculumProps) => {
   const {picture, name, age, email, tel, techTags, jobExperiences, academicExperiences, programmingProjects} = filledForm
 
-  const generateCardSection = (className: string, title: string, list: Record<string, any>[]) => {
-    return (
-    <section className={`${className} cards`}>
-      <h2>{title}</h2>
-
-      <ul>
-        {list.map(card => {
-          const entries = Object.entries(card);
-
-          let uniqueKey = "";
-          let children = [];
-          for (const [key, value] of entries) {
-            uniqueKey += String(value);
-            children.push(
-              <p className={key}>{value instanceof Date ? value.toLocaleDateString() : String(value)}</p>
-            );
-          };
-
-          return (
-            <li key={uniqueKey} className="card-item">
-              {children}
-            </li>
-          )
-        })}
-      </ul>
-    </section>
-    )
+  const downloadCurriculum = () => {
+    return;
   }
 
   return (
     <main>
       <header className="personal-information">
-        <img src="" alt="Candidate's Picture" className="picture" />
+        <img src={`${URL.createObjectURL(picture)}`} alt="Candidate's Picture" className="picture" />
         <div>
           <h1 className="name">{name}</h1>
           <h3 className="age">{age}</h3>
@@ -54,15 +62,13 @@ const Curriculum = ({filledForm, tabState}: Props) => {
         Knowledge: <span className="list">{techTags.reduce((prev, cur) => `${prev}, ${cur}`)}</span>
       </section>
 
-      {generateCardSection("companies", "Companies i worked for:", jobExperiences)}
-
-      {generateCardSection("degrees", "My degrees:", academicExperiences)}
-
-      {generateCardSection("projects", "Programming projects:", programmingProjects)}
+      <Cards className="companies" title="Companies i worked for:" list={jobExperiences}/>
+      <Cards className="degrees" title="My degrees:" list={academicExperiences}/>
+      <Cards className="projects" title="Programming projects" list={programmingProjects}/>
 
       <footer className="actions">
-        <button className="edit">Edit</button>
-        <button className="download">Download</button>
+        <button className="edit" onClick={() => setTab("form")}>Edit</button>
+        <button className="download" onClick={() => downloadCurriculum()}>Download</button>
       </footer>
     </main>
   )

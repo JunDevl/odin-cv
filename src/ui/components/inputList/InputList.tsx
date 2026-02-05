@@ -1,12 +1,12 @@
 import "./inputlist.css"
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-interface Props extends React.HTMLProps<HTMLInputElement> {
+interface InputListProps extends React.HTMLProps<HTMLInputElement> {
   labelText: string,
   maxItems: number,
   listState: [list: string[], setList: React.Dispatch<React.SetStateAction<string[]>>],
 }
-const InputList = ({labelText, maxItems, listState, ...props}: Props) => {
+const InputList = ({labelText, maxItems, listState, ...props}: InputListProps) => {
   const INSERT_ENTRY_TEXT = "+ Press enter to insert";
 
   const contextList = useRef<HTMLUListElement>(null);
@@ -14,17 +14,19 @@ const InputList = ({labelText, maxItems, listState, ...props}: Props) => {
 
   const [list, setList] = listState;
 
+  const [maxHeight, setMaxHeight] = useState<string>("none");
+
   const updateWrapperStyleSheet = () => {
     if (list.length >= maxItems) {
       if (contextList.current!.classList.contains("overflows")) return;
 
-      contextList.current!.style.maxHeight = window.getComputedStyle(contextList.current!).height;
+      setMaxHeight(window.getComputedStyle(contextList.current!).height);
       
       contextList.current!.classList.add("overflows");
       return;
     }
 
-    contextList.current!.style.maxHeight = 'none';
+    setMaxHeight("none");
     contextList.current!.classList.remove("overflows");
   }
 
@@ -53,6 +55,17 @@ const InputList = ({labelText, maxItems, listState, ...props}: Props) => {
     contextList.current!.attributeStyleMap.set("--item-count", list.length);
     updateWrapperStyleSheet();
   }, [list])
+
+  useEffect(() => {
+    contextList.current!.style.maxHeight = maxHeight;
+  }, [maxHeight])
+
+  useEffect(() => {
+    if (list.length > 0) {
+      contextList.current!.attributeStyleMap.set("--item-count", list.length);
+      //updateWrapperStyleSheet();
+    };
+  }, [])
 
   return (
     <div 

@@ -1,5 +1,5 @@
 import "./mainForm.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import PhotoPicker from "../photoPicker/PhotoPicker";
 import InputList from "../inputList/InputList";
 import CardView from "../cardView/CardView";
@@ -7,26 +7,30 @@ import CardView from "../cardView/CardView";
 import type { CurriculumForm, JobExperience, ProgrammingProjects, AcademicExperience, Tab } from "../../types";
 import { boilerplateJob, boilerplateProjects, boilerplateAcademic } from "../../boilerplate";
 
-interface Props {
-  formState: [form: CurriculumForm | null, React.Dispatch<React.SetStateAction<CurriculumForm | null>>]
-  tabState: [tab: Tab, setTab: React.Dispatch<React.SetStateAction<Tab>>]
+interface MainFormProps {
+  formState: [form: CurriculumForm, setForm: React.Dispatch<React.SetStateAction<CurriculumForm>>]
+  setTab: React.Dispatch<React.SetStateAction<Tab>>
 }
 
-const MainForm = ({formState, tabState}: Props) => {
+const MainForm = ({formState, setTab}: MainFormProps) => {
+  const formElement = useRef<HTMLFormElement>(null);
+
   const [form, setForm] = formState;
 
-  const [picture, setPicture] = useState<File | null>(null);
-  const [knownFrameworks, setKnownFrameworks] = useState<string[]>([]);
+  const {name, age, email, tel} = form;
+
+  const [picture, setPicture] = useState<File | null>(form.picture ?? null);
+  const [knownFrameworks, setKnownFrameworks] = useState<string[]>(form.techTags ?? []);
   const [jobExperiences, setJobExperiences] = useState<JobExperience[]>([boilerplateJob]);
   const [programmingProjects, setProgrammingProjects] = useState<ProgrammingProjects[]>([boilerplateProjects]);
   const [academicExperiences, setAcademicExperiences] = useState<AcademicExperience[]>([boilerplateAcademic]);
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submitForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if ("pointerType" in e.nativeEvent && e.nativeEvent.pointerType === "") return;
 
     if (!picture) throw new Error("Can't generate a curriculum without a picture of a face!");
 
-    const formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(formElement.current!);
 
     setForm({
       picture,
@@ -39,37 +43,44 @@ const MainForm = ({formState, tabState}: Props) => {
       programmingProjects,
       academicExperiences
     })
+
+    setTab("curriculum_preview");
   }
 
   return (
     <>
       <h1 className="main-title">Test</h1>
 
-      <form action="" className="main" onSubmit={e => submitForm(e)}>
+      <form 
+        action="" 
+        className="main" 
+        onSubmit={e => {e.preventDefault(); e.stopPropagation()}} 
+        ref={formElement}
+      >
         <div className="wrapper">
           <div className="wrapper-col1">
             <section className="personal-data">
-              <PhotoPicker photoState={[picture, setPicture]}/>
+              <PhotoPicker setPhoto={setPicture}/>
 
               <div className="wrapper">
                 <div className="label-input">  
                   <label htmlFor="name">Full name:</label>
-                  <input type="text" name="name" id="name" autoComplete="name" />
+                  <input type="text" name="name" id="name" autoComplete="name" value={name}/>
                 </div>
 
                 <div className="label-input">
                   <label htmlFor="age">Age:</label>
-                  <input type="number" name="age" id="age"/>
+                  <input type="number" name="age" id="age" value={age}/>
                 </div>
 
                 <div className="label-input">  
                   <label htmlFor="email">Email:</label>
-                  <input type="email" name="email" id="email" autoComplete="email" />
+                  <input type="email" name="email" id="email" autoComplete="email" value={email}/>
                 </div>
 
                 <div className="label-input">  
                   <label htmlFor="phone">Phone number:</label>
-                  <input type="tel" name="phone" id="phone" autoComplete="tel" />
+                  <input type="tel" name="phone" id="phone" autoComplete="tel" value={tel}/>
                 </div>
               </div>
             </section>
@@ -115,7 +126,7 @@ const MainForm = ({formState, tabState}: Props) => {
           />
         </section>
 
-        <button type="submit">
+        <button type="submit" onClick={e => submitForm(e)}>
           Generate Curriculum Vitae
         </button>
       </form>
