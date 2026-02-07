@@ -1,5 +1,5 @@
 import "./inputlist.css"
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 interface InputListProps extends React.HTMLProps<HTMLInputElement> {
   labelText: string,
@@ -14,19 +14,12 @@ const InputList = ({labelText, maxItems, listState, ...props}: InputListProps) =
 
   const [list, setList] = listState;
 
-  const [maxHeight, setMaxHeight] = useState<string>("none");
-
   const updateWrapperStyleSheet = () => {
-    if (list.length >= maxItems) {
-      if (contextList.current!.classList.contains("overflows")) return;
-
-      setMaxHeight(window.getComputedStyle(contextList.current!).height);
-      
+    if (list.length > maxItems) {
       contextList.current!.classList.add("overflows");
       return;
     }
 
-    setMaxHeight("none");
     contextList.current!.classList.remove("overflows");
   }
 
@@ -57,13 +50,16 @@ const InputList = ({labelText, maxItems, listState, ...props}: InputListProps) =
   }, [list])
 
   useEffect(() => {
-    contextList.current!.style.maxHeight = maxHeight;
-  }, [maxHeight])
+    const inputHeight = 
+    parseFloat(
+      window.getComputedStyle(document.documentElement)
+            .getPropertyValue("--input-height")
+    );
 
-  useEffect(() => {
+    contextList.current!.style.maxHeight = `${inputHeight*(maxItems+2)}rem`;
     if (list.length > 0) {
       contextList.current!.attributeStyleMap.set("--item-count", list.length);
-      //updateWrapperStyleSheet();
+      updateWrapperStyleSheet();
     };
   }, [])
 

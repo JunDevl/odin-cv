@@ -36,19 +36,20 @@
   transition: height 250ms;
   interpolate-size: allow-keywords;
   /*Basically only works on chrome, Edge and Opera... Why the f# did nobody implement this INCREDIBLY useful property onto their browsers? Smh.*/
+  scrollbar-color: gray transparent;
+  scrollbar-width: thin;
 
   &>.wrapper {
     margin-top: var(--input-height);
     flex: 1;
+    overflow-y: hidden;
   }
 
   &.overflows>.wrapper {
     overflow-y: scroll;
 
-    scrollbar-color: gray transparent;
-    scrollbar-width: thin;
-  }
 
+  }
 }
 
 .input-wrapper>input:focus+.frameworks-list {
